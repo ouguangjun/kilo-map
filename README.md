@@ -101,6 +101,7 @@ To run with your own dataset, make sure the following YAML parameters are correc
 3. **`time_scale`**: The scale factor to convert each LiDAR point's raw timestamp to seconds (e.g., `1e-9` for nanosecond timestamps, `1e-6` for microseconds). This varies across LiDAR models and even across different driver configurations for the same sensor.
 4. **`sensor_type`**: The fusion mode. Use `LIO` for typical LiDAR-IMU setups.
 5. **`extrinsic_T`** / **`extrinsic_R`**: The translation vector and rotation matrix of the IMU-to-LiDAR extrinsic transformation.
+6. For best results, start mapping from a stationary state to allow the system to initialize IMU biases and the initial pose. Setting `init_type` to `2` enables gravity-aligned initialization.
 
 # Save Map
 <p align="center">
