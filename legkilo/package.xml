@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>legkilo</name>
+  <version>0.0.0</version>
+
+  <description>
+
+    This is a modified and optimized version of the paper 
+    "Leg-KILO: Robust Kinematic-Inertial-Lidar Odometry for Dynamic Legged Robots"
+    https://doi.org/10.1109/LRA.2024.3440730
+
+  </description>
+
+  <maintainer email="ouguangjun98@gmail.com">Guangjun Ou</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend condition="$ROS_VERSION == 1">catkin</buildtool_depend>
+  <buildtool_depend condition="$ROS_VERSION == 2">ament_cmake</buildtool_depend>
+
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>unitree_legged_msgs</depend>
+  <depend>livox_ros_driver</depend>
+  <depend>livox_ros_driver2</depend>
+
+  <depend condition="$ROS_VERSION == 1">roscpp</depend>
+  <depend condition="$ROS_VERSION == 1">tf</depend>
+  <depend condition="$ROS_VERSION == 1">pcl_ros</depend>
+  <depend condition="$ROS_VERSION == 1">pcl_conversions</depend>
+
+  <depend condition="$ROS_VERSION == 2">rclcpp</depend>
+  <depend condition="$ROS_VERSION == 2">tf2</depend>
+  <depend condition="$ROS_VERSION == 2">tf2_ros</depend>
+  <depend condition="$ROS_VERSION == 2">pcl_conversions</depend>
+  <exec_depend condition="$ROS_VERSION == 2">launch_ros</exec_depend>
+
+  <export>
+    <build_type condition="$ROS_VERSION == 2">ament_cmake</build_type>
+  </export>
+</package>
