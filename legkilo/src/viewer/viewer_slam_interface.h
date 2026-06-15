@@ -99,6 +99,7 @@ class ViewerSlamInterface : public ViewerBase {
     bool draw_edges_;
     bool follow_current_;
     bool rotate_trajectory_;
+    int max_submaps_display_;
 
     double point_alpha_;
     double point_size_;

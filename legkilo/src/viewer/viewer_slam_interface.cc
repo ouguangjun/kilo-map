@@ -90,6 +90,7 @@ ViewerSlamInterface::ViewerSlamInterface(const std::string& config_path) {
     draw_edges_ = true;
     follow_current_ = true;
     rotate_trajectory_ = false;
+    max_submaps_display_ = -1;
 
     point_alpha_ = 0.4;
     point_size_ = 0.8;
@@ -250,6 +251,10 @@ void ViewerSlamInterface::displayPanelCallback() {
     show_note("Toggle the display of the edges.");
 
     ImGui::Separator();
+    ImGui::SetNextItemWidth(100.0f);
+    ImGui::SliderInt("Max Submaps Display", &max_submaps_display_, -1, 500);
+    show_note("Maximum number of submaps to display (-1 = all).");
+
     ImGui::Checkbox("Follow", &follow_current_);
     show_note("Camera follows the current pose.");
 
@@ -286,6 +291,21 @@ void ViewerSlamInterface::insertFinishedSubmap(NodeType id, SubmapPosesCloud sub
         if (finished_submaps_.find(id) != finished_submaps_.end()) return;
         finished_submaps_.insert({id, submap_pose_cloud});
         this->updateTransformFrontend2Backend();
+
+        // Cull old submap pointcloud drawables (keep only max_submaps_display_ most recent)
+        if (max_submaps_display_ > 0) {
+            const int num_submaps = static_cast<int>(finished_submaps_.size());
+            const int visible_begin = std::max(0, num_submaps - max_submaps_display_);
+            int counter = 0;
+            auto viewer = guik::LightViewer::instance();
+            for (auto& [sid, s_pose_cloud] : finished_submaps_) {
+                if (counter < visible_begin) {
+                    viewer->remove_drawable("finished_submap_" + std::to_string(sid));
+                }
+                ++counter;
+            }
+        }
+
         is_finished_drawable_update_ = true;
     });
 }
@@ -338,6 +358,7 @@ void ViewerSlamInterface::refreshDrawables() {
         // finished
         if (is_finished_drawable_update_) {
             traj_finished_.clear();
+
             for (auto& [id, submap_pose_cloud] : finished_submaps_) {
                 auto& [submap_pose, keyframe_poses, cloud] = submap_pose_cloud;
 
@@ -346,20 +367,17 @@ void ViewerSlamInterface::refreshDrawables() {
                 if (drawable.first) {
                     // Update transform for existing drawable
                     drawable.first->set_model_matrix(submap_pose);
-                    // Release CPU buffer to save memory
-                    cloud.reset();
                 } else if (cloud && !cloud->empty()) {
-                    // Create a new drawable from CPU buffer
                     auto pointcloud_drawable = std::make_shared<glk::PointCloudBuffer>(*cloud);
                     pointcloud_drawable->add_color(makeHeightColors(*cloud, point_alpha_));
                     auto shader_setting = guik::VertexColor(submap_pose.cast<float>())
                                               .set_alpha(point_alpha_)
                                               .set_point_scale(point_size_);
-
                     viewer->update_drawable("finished_submap_" + std::to_string(id), pointcloud_drawable,
                                             shader_setting);
-                    cloud.reset();
                 }
+                // Release CPU buffer to save memory 
+                if (cloud) cloud.reset();
 
                 // origin drawable
                 viewer->update_drawable(

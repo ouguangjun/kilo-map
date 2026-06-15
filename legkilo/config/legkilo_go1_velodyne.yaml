@@ -36,7 +36,7 @@ voxel_max_num: 50                 ## max number of points in each voxel
 planar_ratio: 0.1                 ## the ratio of the smallest eigenvalue for plane detection
 planar_thickness: 0.1             ## [m] the thickness of plane for plane detection
 nearby_type: 0                    ## knn search range:  0: center voxel; 1: nearby 7 voxels; 2: nearby 27 voxels
-capacity: 1000000                 ## max number of voxels in voxel map
+capacity: 300000                  ## max number of voxels in voxel map
 ndt_min_points: 5                 ## minimum number of points in voxel for ndt residual
 
 # backend

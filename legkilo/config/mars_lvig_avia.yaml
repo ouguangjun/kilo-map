@@ -1,6 +1,6 @@
 # Topics
-lidar_topic: /livox/lidar  ## Lidar topic
-imu_topic: /livox/imu             ## IMU topic
+lidar_topic: /livox/lidar        ## Lidar topic
+imu_topic: /livox/imu            ## IMU topic
 
 # Sensor Mode
 sensor_type: LIO                 ## LO: lidar only, LIO: lidar + imu, KILO: lidar + kinematics + imu (LO mode has not been tested and is not recommended for use)
@@ -17,7 +17,7 @@ extrinsic_R: [ 1, 0, 0,
 
 # Lidar Common
 lidar_type: 5                    ## Velodyne: 1, Ouster: 2, Pandar: 3, KITTI: 4, Livox: 5
-time_scale: 1e-9                    ## point sampling time scale relative to [sec] (e.g., 1 for sec, 1e-3 for msec, 1e-6 for usec, 1e-9 for nsec/Livox)
+time_scale: 1e-9                 ## point sampling time scale relative to [sec] (e.g., 1 for sec, 1e-3 for msec, 1e-6 for usec, 1e-9 for nsec/Livox)
 min_range: 1.0                   ## min range for valid points [m]
 max_range: 150.0                 ## max range for valid points [m]
 filter_num: 1                    ## number of points to filter
@@ -36,7 +36,7 @@ voxel_max_num: 50                ## max number of points in each voxel
 planar_ratio: 0.1                ## the ratio of the smallest eigenvalue for plane detection
 planar_thickness: 0.1            ## [m] the thickness of plane for plane detection
 nearby_type: 0                   ## knn search range:  0: center voxel; 1: nearby 7 voxels; 2: nearby 27 voxels
-capacity: 1000000                ## max number of voxels in voxel map
+capacity: 300000                 ## max number of voxels in voxel map
 ndt_min_points: 5                ## minimum number of points in voxel for ndt residual
 
 # backend
@@ -46,7 +46,7 @@ kf_max_num_submap: 20            ## max number of submaps to maintain
 kf_max_dist_submap: 5.0          ## [m] max distance between the begin frame and end frame of a submap
 
 # Loop closure
-loop_closure_enable: true    ## enable/disable loop closure backend
+loop_closure_enable: true        ## enable/disable loop closure backend
 loop_search_radius: 10.0         ## [m] search radius for candidate detection
 loop_min_id_separation: 50       ## minimum ID gap between candidate submaps
 loop_icp_max_corr_dist: 4.0      ## [m] max correspondence distance for SMALL-ICP
