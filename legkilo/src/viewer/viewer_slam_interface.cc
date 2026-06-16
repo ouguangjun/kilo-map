@@ -225,7 +225,10 @@ void ViewerSlamInterface::runModal() {
 }
 
 void ViewerSlamInterface::displayPanelCallback() {
-    if (!ImGui::Begin("Selection", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) { return; }
+    if (!ImGui::Begin("Selection", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) { 
+        ImGui::End();   // 窗口折叠时也必须调用 End()
+        return; 
+    }
 
     const auto show_note = [](const std::string& text) {
         if (ImGui::IsItemHovered()) {
