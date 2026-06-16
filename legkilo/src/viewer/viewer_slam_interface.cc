@@ -61,14 +61,22 @@ CloudColors makeHeightColors(const ViewerSlamInterface::CloudVec& cloud, const f
     colors.reserve(cloud.size());
     if (cloud.empty()) return colors;
 
-    float min_z = cloud.front().z();
-    float max_z = min_z;
-    for (const auto& point : cloud) {
-        min_z = std::min(min_z, point.z());
-        max_z = std::max(max_z, point.z());
-    }
+    static constexpr int kSkip = 10;
+    static constexpr int kPctLoIdx = 5;
+    static constexpr int kPctHiIdx = 95;
 
+    std::vector<float> zs;
+    zs.reserve(cloud.size() / kSkip + 1);
+    for (size_t i = 0; i < cloud.size(); i += kSkip) { zs.push_back(cloud[i].z()); }
+
+    std::sort(zs.begin(), zs.end());
+    const size_t lo_idx = zs.size() * kPctLoIdx / 100;
+    const size_t hi_idx = zs.size() * kPctHiIdx / 100;
+
+    const float min_z = zs[lo_idx];
+    const float max_z = zs[hi_idx];
     const float z_range = max_z - min_z;
+
     for (const auto& point : cloud) {
         const float ratio = z_range > 1e-3f ? (point.z() - min_z) / z_range : 0.5f;
         auto color = glk::colormapf(glk::COLORMAP::TURBO, ratio);
