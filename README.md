@@ -13,9 +13,9 @@
   <!-- ROS2 -->
   <img src="https://img.shields.io/badge/build-ROS2-blue" alt="ROS2 Build" />
   <!-- License -->
-  <img src="https://img.shields.io/badge/MIT_License-red?style=flat-square" alt="License" />
+  <img src="https://img.shields.io/badge/MIT_License-green?style=flat-square" alt="License" />
   <a href="./README_CN.md">
-    <img src="https://img.shields.io/badge/简体中文-green?style=flat-square" alt="Bilibili Video" />
+    <img src="https://img.shields.io/badge/简体中文-red?style=flat-square" alt="Bilibili Video" />
   </a>
 </p>
 
@@ -25,7 +25,9 @@
 
 kilo-map is a real-time LiDAR-based SLAM system with the following features:
 
-- **Tightly-Coupled ESKF Frontend**: Fuses LiDAR and IMU in an Error-State Kalman Filter. A Gaussian voxel map incrementally maintains uncertain features (planar features and a variant of NDT features), improving feature utilization across both structured and unstructured environments.
+- **Hybrid Feature Gaussian Voxel Map**: Incrementally maintains uncertain hybrid features (planar and NDT-variant), improving feature utilization across both structured and unstructured environments.
+
+- **Two-Stage ESKF Frontend**: Fuses LiDAR and IMU in an Error-State Kalman Filter with a **two-stage lidar update** for high-dynamic motion: **Stage 1** performs incremental per-point ESKF updates along the scan timeline to compensate for motion distortion (analogous to Point-LIO); **Stage 2** backpropagates the distortion-corrected points to body frame and runs iterated ESKF (IESKF) over the full frame for global consistency refinement. This design makes the system robust against aggressive platform dynamics (e.g., legged robots) while preserving IESKF's fast convergence property.
 
 - **Factor Graph Backend**: Uses Ceres-based factor graph optimization to tightly couple loop-closure constraints with odometry factors, reducing global drift. [small_gicp](https://github.com/koide3/small_gicp) and [KISS-Matcher](https://github.com/MIT-SPARK/KISS-Matcher) serve as verification modules for loop closure, improving matching accuracy.
 
