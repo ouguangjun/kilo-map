@@ -15,7 +15,8 @@ sensor_type: LIO                   ## LO: lidar only, LIO: lidar + imu, KILO: li
 gravity: 9.81 
 init_type: 2                       ## 1: Identity (R=I, g from mean acc); 2: GravityAlignment (R aligns acc to world gravity, g=[0,0,-G])
 
-# Extrinsic (Transformation  from IMU coordinate  to Lidar coordinate)
+# Extrinsic: rigid body transform from LiDAR frame to IMU frame (T_I_L)
+# meaning: LiDAR coordinate system expressed in IMU coordinate system
 extrinsic_T: [0.005, 0.00056, 0.299]
 extrinsic_R: [1, 0, 0, 0, 1, 0, 0, 0, 1]
 
